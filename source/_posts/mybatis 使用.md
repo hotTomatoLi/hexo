@@ -1,6 +1,6 @@
 ---
-title:  JAVA 代理模式
-tags: [JAVA,代理]
+title:  Mybatis 使用
+tags: [Mybatis]
 toc: true
 ---
 ## Mybatis
