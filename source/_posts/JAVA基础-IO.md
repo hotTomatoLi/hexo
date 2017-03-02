@@ -174,5 +174,21 @@ OutputStream是所有输出流的基类。与InputStream类似，OutputSteam也�
 
 #### BufferedOutputStream
 实际上也是调用了自己内部的OutputStream的方法实现输出数据。
+```
+    @Test
+    public void testBufferedOutputStrean() throws IOException {
+        File file = new File("E:\\2.txt");
+        if(!file.exists()){
+            file.createNewFile();
+        }
+        BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(new FileOutputStream(file));
+        bufferedOutputStream.write(46);
+        bufferedOutputStream.write(47);
+        bufferedOutputStream.write(48);
+        bufferedOutputStream.write(49);
+        bufferedOutputStream.flush();
+        bufferedOutputStream.close();
+    }
+```
 
-
+## 字符流
