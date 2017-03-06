@@ -254,3 +254,8 @@ module.exports = {
 ```
 npm run dev
 ```
+
+
+# 问题
+在idea中，如果安装node_modules到app目录下，会造成idea索引过多导致程序内存不足卡死状态。
+因此，考虑在其他的位置安装node_modules。

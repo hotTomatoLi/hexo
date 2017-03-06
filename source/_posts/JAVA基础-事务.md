@@ -22,9 +22,15 @@ toc: true
 - 不可重复读 non-repeatable read
 - 幻读 phantom read
 
-脏读（dirty read）：一个事务读取了另一个事务尚未提交的数据。   
-不可重复读（non-repeatable read）：一个事务的操作导致另一个事务前后两次读到不同的数据。   
-幻读（phantom read）：一个事务的操作导致另一个事务前后两次查询的结果数据量不同。   
+脏读（dirty read）：一个事务读取了另一个事务尚未提交的数据，而这个数据是有可能回滚。   
+
+不可重复读（non-repeatable read）：一个事务的操作导致另一个事务前后两次读到不同的数据。不可重复读意味着，
+在数据库访问中，一个事务范围内两个相同的查询却返回了不同数据。这是由于查询时系统中其他事务修改的提交而引起的。   
+
+幻读（phantom read）：一个事务的操作导致另一个事务前后两次查询的结果数据量不同。幻读,是指当事务不是独立执行时发生
+的一种现象，例如第一个事务对一个表中的数据进行了修改，这种修改涉及到表中的全部数据行。
+同时，第二个事务也修改这个表中的数据，这种修改是向表中插入一行新数据。那么，
+以后就会发生操作第一个事务的用户发现表中还有没有修改的数据行，就好象发生了幻觉一样.。   
 
 # Java JDBC事务机制
 JDBC的事务基于Connection，通过Connection对象对事务进行管理。`setAutoCommit`、`commit`、`rollback`等。
@@ -36,6 +42,6 @@ JDBC的事务基于Connection，通过Connection对象对事务进行管理。`s
 - TRANSACTION_NONE JDBC驱动不支持事务
 - TRANSACTION_READ_UNCOMMITTED 允许脏读、不可重复读和幻读
 - TRANSACTION_READ_COMMITTED 禁止脏读，但允许不可重复读和幻读
-- TRANSACTION_REPEATABLE_READ 禁止脏读和不可重复读，单运行幻读
+- TRANSACTION_REPEATABLE_READ 禁止脏读和不可重复读，允许幻读
 - TRANSACTION_SERIALIZABLE 禁止脏读、不可重复读和幻读
 
