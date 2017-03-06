@@ -1,0 +1,41 @@
+---
+title: JAVA基础-事务
+tags: [JAVA基础,事务]
+toc: true
+---
+# 事务
+## 含义
+事务是一步或多步组成操作序列组成的逻辑执行单元，这个序列要么全部执行，要么则全部放弃执行。
+事务的四个特性
+- 原子性 Atomicity
+- 一致性 Consistency
+- 隔离性 IsoIation
+- 持续性 Durability
+
+原子性（Atomicity）：事务应用最小的执行单元，不可再分。是事务中不可再分的最小逻辑执行体。   
+一致性（Consistency）：事务的执行结果，必须使数据库的从一个一致性的状态变到另一个一致性的状态。   
+隔离线（IsoIation）：各个事务的执行互不干扰，任意一个事务的内部操作对其他并发的事务，都是隔离的。也就是：并发执行的事务之间不能看到对方的中间状态，并发执行的事务之间不能互相影响。   
+持续性（Durability）：持续性也称为持久性（Persistence），指事务一旦提交，对数据所做的任何改变，都要记录到永久存储器中，通常就是保存在物理数据库中。
+
+## 事务并发的问题
+- 脏读 dirty read
+- 不可重复读 non-repeatable read
+- 幻读 phantom read
+
+脏读（dirty read）：一个事务读取了另一个事务尚未提交的数据。   
+不可重复读（non-repeatable read）：一个事务的操作导致另一个事务前后两次读到不同的数据。   
+幻读（phantom read）：一个事务的操作导致另一个事务前后两次查询的结果数据量不同。   
+
+# Java JDBC事务机制
+JDBC的事务基于Connection，通过Connection对象对事务进行管理。`setAutoCommit`、`commit`、`rollback`等。
+- 自动提交模式 auto-commit mode，auto-commit 为true
+- auto-commit为false，每个事务都必须显示调用commit方法进行提交，或者显示调用rollback方法进行回滚
+
+
+## 事务隔离级别（Transaction Isolation Levels）
+- TRANSACTION_NONE JDBC驱动不支持事务
+- TRANSACTION_READ_UNCOMMITTED 允许脏读、不可重复读和幻读
+- TRANSACTION_READ_COMMITTED 禁止脏读，但允许不可重复读和幻读
+- TRANSACTION_REPEATABLE_READ 禁止脏读和不可重复读，单运行幻读
+- TRANSACTION_SERIALIZABLE 禁止脏读、不可重复读和幻读
+
