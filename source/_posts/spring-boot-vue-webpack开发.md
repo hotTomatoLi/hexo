@@ -12,6 +12,9 @@ toc: true
 - idea + sublime
 最终得到springboot作为restful的服务端，vuejs作为展示端的项目，并以此为基础，进行项目开发。开发工具采用gradle作为
 构建工具，idea作为java端开发工具，sublime作为展示端开发工具。
+注：其实项目结构这样建立最终效果是：
+- 开发时，利用node的web功能进行热部署开发，同时启动springboot项目接受node端的请求；
+- 部署时，通过gradle的打包命令，将node编译生成的结果放到了spring项目中，作为静态文件目录，不再需要node的运行环境，利用spring的web功能；
 
 # 搭建过程
 ## springboot
@@ -259,3 +262,4 @@ npm run dev
 # 问题
 在idea中，如果安装node_modules到app目录下，会造成idea索引过多导致程序内存不足卡死状态。
 因此，考虑在其他的位置安装node_modules。
+貌似没有方法在改目录下直接将package.json中的依赖下载到全局的命令，要么写个脚本解析package.json，然后依次下载，要么在别的地方执行node开发，最终提交代码而已。
