@@ -288,7 +288,7 @@ dubbo.container=spring
 dubbo.application.name=demo
 dubbo.application.owner=com.leegebe
 dubbo.registry.register=true
-dubbo.registry.address=zookeeper://192.168.10.150:2181
+dubbo.registry.address=zookeeper://192.168.255.255:2181
 dubbo.protocol.dubbo.port=20958
 dubbo.registry.file=dubbo.registry.properties
 ```
