@@ -171,6 +171,227 @@ mybatis和spring集成后，mybatis自身的事务会被spring覆盖。
     </bean>
 ```
 
+## 建立demo
+### 建立Model对象User
+```
+public class User implements Serializable {
+
+    private static final long serialVersionUID = -7396402169234330389L;
+
+    private Long id;
+
+    private String userId;
+
+    private String userName;
+
+    private String loginName;
+
+    private String password;
+
+    private Long createTime;
+
+    private Long updateTime;
+
+    private Integer isValidated;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public String getLoginName() {
+        return loginName;
+    }
+
+    public void setLoginName(String loginName) {
+        this.loginName = loginName;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public Long getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Long createTime) {
+        this.createTime = createTime;
+    }
+
+    public Long getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(Long updateTime) {
+        this.updateTime = updateTime;
+    }
+
+    public Integer getIsValidated() {
+        return isValidated;
+    }
+
+    public void setIsValidated(Integer isValidated) {
+        this.isValidated = isValidated;
+    }
+}
+```
+
+### 建立mapper对象UserMapper
+```
+package com.leegebe.dubbo.mapper;
+
+import com.leegebe.dubbo.model.User;
+
+/**
+ *
+ */
+public interface UserMapper {
+
+    User getUserById(int id);
+
+}
+```
+### 建立mapper文件
+```
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.leegebe.dubbo.mapper.UserMapper">
+
+    <resultMap id="userResultMap" type="com.leegebe.dubbo.model.User">
+        <id column="ID" jdbcType="BIGINT" property="id" />
+        <result column="USER_ID" jdbcType="VARCHAR" property="userId" />
+        <result column="USER_NAME" jdbcType="VARCHAR" property="userName" />
+        <result column="LOGIN_NAME" jdbcType="VARCHAR" property="loginName" />
+        <result column="PASSWORD" jdbcType="VARCHAR" property="password" />
+        <result column="CREATE_TIME" property="createTime" jdbcType="BIGINT" />
+        <result column="UPDATE_TIME" property="updateTime" jdbcType="BIGINT" />
+        <result column="IS_VALIDATE" property="isValidated" jdbcType="INTEGER" />
+    </resultMap>
+
+    <sql id="tableName">
+        ele_shop_user
+    </sql>
+
+    <select id="getUserById" resultMap="userResultMap">
+        SELECT * FROM <include refid="tableName"/> WHERE ID = #{id}
+    </select>
+
+</mapper>
+```
+
+### 建立serviceApi和impl
+```
+package com.leegebe.dubbo.api;
+
+import com.leegebe.dubbo.model.User;
+
+/**
+ * 查询用户API
+ */
+public interface UserApi {
+
+    User getUserById(int id);
+
+}
+```
+
+```
+package com.leegebe.dubbo.api.impl;
+
+import com.leegebe.dubbo.api.UserApi;
+import com.leegebe.dubbo.mapper.UserMapper;
+import com.leegebe.dubbo.model.User;
+import org.springframework.stereotype.Service;
+
+import javax.annotation.Resource;
+
+/**
+ * User接口实现类
+ */
+@Service("userApi")
+public class UserApiImpl implements UserApi {
+
+    @Resource
+    UserMapper userMapper;
+
+    public User getUserById(int id) {
+        return userMapper.getUserById(id);
+    }
+}
+
+```
+### 建立测试类
+```
+package com.leegebe.dubbo.api.impl;
+
+import com.leegebe.dubbo.api.UserApi;
+import com.leegebe.dubbo.model.User;
+import org.junit.Assert;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+import javax.annotation.Resource;
+
+import static org.junit.Assert.*;
+
+/**
+ *
+ */
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(locations={"classpath*:META-INF/spring/*.xml"})
+public class UserApiImplTest {
+
+    @Autowired
+    UserApi userApi;
+
+    @Test
+    public void getUserById() throws Exception {
+        int userId = 1;
+        User user = userApi.getUserById(userId);
+        Assert.assertNotNull(user);
+        System.out.println(user.getUserName());
+    }
+
+}
+```
+
+### 前后端连调测试
+```
+ <dubbo:service interface="com.leegebe.dubbo.api.UserApi" ref="userApi" version="${dubbo.service.version}"/>
+```
+
+```
+    <!-- 生成远程服务代理，可以和本地bean一样使用 -->
+    <dubbo:reference id="userApi" interface="com.leegebe.dubbo.api.UserApi" version="${dubbo.service.version}"/>
+```
+版本号在配置文件中定义并在spring中引入即可。
 
 # 总结
 搭建过程中，遇到一些问题，总结如下。
@@ -179,3 +400,12 @@ mybatis和spring集成后，mybatis自身的事务会被spring覆盖。
 
 ## tomcat部署时ClassNotFound
 是因为在部署的时候没有部署maven依赖的包，Project Structure->Artifacts->Output Layout，将Available Elements下的maven依赖，以及dubbo-service-api依赖添加到部署目录的lib包下。
+
+## java.lang.IllegalStateException: Could not load TestContextBootstrapper [null]
+原因是spring-test依赖的版本和spring的版本不一致导致
+
+## 配置文件导入问题
+```
+    <context:property-placeholder location="classpath:database.properties,classpath:conf.properties" />
+```
+如果在俩个文件中分别引入配置文件导入，会导致一个失效。
