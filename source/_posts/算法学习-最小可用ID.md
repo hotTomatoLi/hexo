@@ -1,5 +1,5 @@
 ---
-title: 算法学习-最⼩可⽤ID
+title: 算法学习-最小可用ID
 tags: [算法学习]
 toc: true
 ---
