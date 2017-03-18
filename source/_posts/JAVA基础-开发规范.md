@@ -131,9 +131,10 @@ sb.append("zi").append("xin")...
     .append("huang")...
     .append("huang")...
     .append("huang");
-```    
+```  
 
 反例：
+
 ```
 StringBuffer sb = new StringBuffer();
 //超过120个字符的情况下，不要在括号前换行
@@ -143,11 +144,14 @@ sb.append("zi").append("xin")...append
 method(args1, args2, args3, ...
     , argsX);
 ```
+
 7. 【强制】方法参数在定义和传入时，多个参数逗号后边必须加空格。
 正例：下例中实参的"a",后边必须要有一个空格。
+
 ```
 method("a", "b", "c");
 ```
+
 8. 【强制】IDE的text file encoding设置为UTF-8; IDE中文件的换行符使用Unix格式，不要使用windows格式。
 9. 【推荐】没有必要增加若干空格来使某一行的字符与上一行的相应字符对齐。
 正例：
@@ -157,6 +161,7 @@ long b = 4L;
 float c = 5F;
 StringBuffer sb = new StringBuffer();
 ```
+
 说明：增加`sb`这个变量，如果需要对齐，则给`a`、`b`、`c`都要增加几个空格，在变量比较多的情况下，是一种累赘的事情。   
 
 10. 【推荐】方法体内的执行语句组、变量的定义语句组、不同的业务逻辑之间或者不同的语义之间插入一个空行。相同业务逻辑和语义之间不需要插入空行。    
