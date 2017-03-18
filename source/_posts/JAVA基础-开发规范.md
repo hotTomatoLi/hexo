@@ -132,6 +132,7 @@ sb.append("zi").append("xin")...
     .append("huang")...
     .append("huang");
 ```    
+
 反例：
 ```
 StringBuffer sb = new StringBuffer();
