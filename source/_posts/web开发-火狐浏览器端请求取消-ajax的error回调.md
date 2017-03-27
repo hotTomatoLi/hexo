@@ -37,6 +37,15 @@ async:false
 
 ## 监听`beforeunload`
 监听window对象的`beforeunload`事件，增加一个标志flag。当页面跳转、刷新时，`flag=true`,在`error`事件中，如果`flag==true`，则不执行相关提示。
+```
+var globalVars = window.globalVars || { };
+
+globalVars = {unloaded:false};
+$(window).bind('beforeunload', function(){
+    globalVars.unloaded = true;
+});
+window.globalVars = globalVars;
+```
 
 ## 服务器端解决
 能够想到的就是在发生`ClientAbortException`异常时，进行过滤，但是浏览器能否接受到该信息，未测试过。可以考虑写一个ExceltionHandler。
