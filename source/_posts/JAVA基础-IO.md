@@ -192,3 +192,8 @@ OutputStream是所有输出流的基类。与InputStream类似，OutputSteam也�
 ```
 
 ## 字符流
+在JAVA程序中，一个字符为16位，提供了Reader和Writer用于操作字符流。
+
+### Reader
+读取字符流的抽象类，需要子类必须实现的方法有`read(char[], int, int)` 和 `close()`。但是子类也会实现其他方法，以提高效率或是增强功能。
+实际上，在Reader的具体实现类中，往往依赖InputStream。在`InputStreamReader`中，需要给定输入流`InputStream`。
