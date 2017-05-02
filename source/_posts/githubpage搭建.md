@@ -82,3 +82,29 @@ $ npm install hexo-cli -g cnpm --registry=https://registry.npm.taobao.org
 $ cd /home/li/workspace/blog
 $ hexo init
 ```
+
+
+## 问题
+### `hexo d`时问题
+当执行`hexo d`时，发送错误，如下
+```
+nothing to commit, working tree clean
+Host key verification failed.
+fatal: Could not read from remote repository.
+
+Please make sure you have the correct access rights
+and the repository exists.
+FATAL Something's wrong. Maybe you can find the solution here: http://hexo.io/docs/troubleshooting.html
+Error: Host key verification failed.
+fatal: Could not read from remote repository.
+
+Please make sure you have the correct access rights
+and the repository exists.
+```
+是因为生成ssh key的时候，少了known_hosts文件。
+
+执行
+```
+ssh git@github.com
+```
+生成know_hosts文件即可。
